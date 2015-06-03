@@ -4,15 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ge.edu.freeuni.sdp.xo</groupId>
-	<artifactId>signin</artifactId>
+	<artifactId>xo-signin</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
-	<name>signin</name>
+	<name>xo-signin</name>
 
 	<build>
 		<testSourceDirectory>test</testSourceDirectory>
 
-		<finalName>xo-signin</finalName>
+		<finalName>todo-core</finalName>
 		<plugins>
 
 			<plugin>
