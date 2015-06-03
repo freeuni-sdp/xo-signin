@@ -1,8 +1,8 @@
 
 
-import ge.edu.freeuni.sdp.todo.data.InMemoryRepository;
-import ge.edu.freeuni.sdp.todo.data.Repository;
-import ge.edu.freeuni.sdp.todo.data.TaskEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.InMemoryRepository;
+import ge.edu.freeuni.sdp.xo.signin.data.Repository;
+import ge.edu.freeuni.sdp.xo.signin.data.TaskEntity;
 
 import java.util.HashMap;
 import java.util.Map;

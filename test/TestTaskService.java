@@ -1,5 +1,5 @@
-import ge.edu.freeuni.sdp.todo.core.TaskDo;
-import ge.edu.freeuni.sdp.todo.data.TaskEntity;
+import ge.edu.freeuni.sdp.xo.signin.TaskDo;
+import ge.edu.freeuni.sdp.xo.signin.data.TaskEntity;
 
 import java.util.*;
 
