@@ -1,110 +1,102 @@
 FORMAT: 1A
-HOST: http://xo-signin.herokuapp.com/
+HOST: http://polls.apiblueprint.org/
 
-# xo-signin API
+# xo-signing
 
 xo-signin is a simple api allowing new user registration, password and username
 recovery
 
-# todo-core API Root [/todos]
+# xo-signin API Root [/]
 
-## List all tasks [GET]
+##Register
+### Register user [PUT]
 
-Returns all tasks on the server.
+Creates a new user. Asks for mail activation.
 
-+ Response 200 (application/json)
+Attributes used:
 
-    + Body
+email - The email address of the user.
+username - The name by which the user will be recognized. 
+password- The password used to authenticate the user.
 
-            [
-                {
-                    "text":"Pay the bill.",
-                    "id":"7b5be1f4-78f9-4e32-8b75-a7e87afec329"
-                },
-                {
-                    "text":"Clean up the car.",
-                    "id":"952daf28-1ff6-4a98-8a82-635480693aa4"
-                }
-            ]
-
-## Retrive a single task [GET/{task_id}]
-
-Returns a task object by it's ID if found.
-
-
-+ Parameters
-    + task_id (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`) ... ID of the Task is a system generated random string
-
-+ Response 200 (application/json)
-
-                {
-                    "text":"Call mom!",
-                    "id":"0b3211d3-76c6-456d-8971-20aa277bfc76"
-                }
-
-## Create a new task [POST]
-
-You may create your own task using this action. It takes a JSON
-object containing a task.
-
-+ text (string) - Arbitrary text content
-+ id (string) - optional, will be ignored. A new id will be assigned 
+The 409 response is returned if a user with a matching email address already exists.
 
 + Request (application/json)
 
-            {
-                "text":"Call mom!",
+            { 
+                "email" : "mtari11@freeuni.edu.ge",
+                "username" : MT13,
+                "password" : "1234"
             }
 
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /741340b7-1d03-45ac-a828-0d1430747b34
-
-    + Body
++ Response 200 (application/json)
 
             {
-                "text":"Call dad!",
-                "id":"741340b7-1d03-45ac-a828-0d1430747b34"
+                "url" : { "href": "/user/222" },
+                "id" : "222",
+                "email" : "mtari11@freeuni.edu.ge",
+                "username" : MT13,
+                "password" : "1234"
             }
 
-## Update an existing task [PUT/{task_id}]
++ Response 409
 
-You may update an existing task using this action. It takes a JSON
-object containing a task.
+            {
+                "message" : "The email address mtari11@freeuni.edu.ge is already registered. Please try different email address."
+            }
 
-+ text (string) - Arbitrary text content
-+ id (string) - ID of an existing task
+## Recovery
 
-+ Parameters
-    + task_id (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`) ... ID of the Task is a system generated random string
+### Password recovery [POST]
+
+This resource is in head of password recovery.
 
 + Request (application/json)
 
-            {
-                "text":"New text!",
-            }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /741340b7-1d03-45ac-a828-0d1430747b34
-
-    + Body
-
-            {
-                "text":"New text!",
-                "id":"741340b7-1d03-45ac-a828-0d1430747b34"
-            }
-            
-## Delete an existing task [DELETE/{task_id}]
-
-You may delete an existing task using this action.
-
-
-+ Parameters
-    + task_id (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`) ... ID of the Task is a system generated random string
+        { 
+            "email" : "mtari11@freeuni.edu.ge"
+            "username" : "MT13"
+        }
 
 + Response 200 (application/json)
+
+        { 
+            "success": true,
+            "message": "reset instructions have been sent"
+        }
+
++ Response 401 (application/json)
+
+        { 
+            "success": false,
+            "message": "the email address or username was not found" 
+        }
+
+
+
+###Username recovery [POST]
+
+This resource is in head of username recovery.
+
++ Request (application/json)
+
+        { 
+            "email" : "mtari11@freeuni.edu.ge"
+        }
+
++ Response 200 (application/json)
+
+        { 
+            "success": true,
+            "message": "username recovery instructions have been sent"
+        }
+
++ Response 401 (application/json)
+
+        { 
+            "success": false,
+            "message": "the email address was not found" 
+        }
+
+
+
