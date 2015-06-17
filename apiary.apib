@@ -11,12 +11,14 @@ recovery.
 ## Register new user [POST/signup]
 
 Registers a new user. Asks for e-mail verification.
-
 Attributes used:
 
 email    - The e-mail address provided by user.
-username - Unique user identifier provided by user. 
+
+username - Unique user identifier chosen by user. 
+
 password - The password used to authenticate the user.
+
 
 The 409 response is returned if a user with a given e-mail address or username already exists.
 
@@ -61,7 +63,7 @@ Confirms e-mail address to complete user registration process.
 
 ## Password recovery [POST/recover_password]
 
-This resource is in head of password recovery.
+Allows user to request new password in case it was forgotten.
 
 + Request (application/json)
 
@@ -81,12 +83,12 @@ This resource is in head of password recovery.
 
         { 
             "success": false,
-            "message": "the email address or username was not found" 
+            "message": "the email address or username was not found"
         }
 
 ## Password recovery from email [POST/recover_password/{token}]
 
-Allows user to change forgotten password.
+Allows user to choose new password in case it was forgotten. This URI is supposed to be invoked from e-mail.
 
 + Parameters
     + token (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`)
@@ -103,7 +105,7 @@ Allows user to change forgotten password.
 
 ## Username recovery [POST/recover_username]
 
-This resource is in head of username recovery.
+Allows user to be reminded of his/her username via e-mail message.
 
 + Request (application/json)
 
@@ -115,12 +117,12 @@ This resource is in head of username recovery.
 
         { 
             "success": true,
-            "message": "username was sent to e-mail address."
+            "message": "username was sent to designated e-mail address"
         }
 
 + Response 401 (application/json)
 
         { 
             "success": false,
-            "message": "the e-mail address was not found" 
+            "message": "the e-mail address was not found"
         }
