@@ -43,7 +43,9 @@ Following Attributes used:
 ## E-mail adress confirmation resource [/confirm_email/{token}]
 
 ### Confirm e-mail address [GET]
+
 Confirms e-mail address to complete user registration process.
+
 + Parameters
     + token (required, string, `0b3211d3-76c6-456d-8971-20aa277bfc76`)
 
@@ -60,7 +62,7 @@ Confirms e-mail address to complete user registration process.
 
 ### Request password recovery via e-mail [POST]
 
-Allows user to request new password in case it was forgotten.
+Allows user to request new password in case it was forgotten. On Success, password is sent to e-mail address.
 
 + Request (application/json)
 
@@ -73,29 +75,9 @@ Allows user to request new password in case it was forgotten.
 
 + Response 401
 
-
-## E-mail password recovery resource [/recover_password/{token}]
-
-### Recover/change password from email [POST]
-
-Allows user to choose new password in case it was forgotten. This URI is supposed to be invoked from e-mail.
-
-+ Parameters
-    + token (required, string, `0b3211d3-76c6-456d-8971-20aa277bfc76`)
-
-+ Request (application/json)
-
-            { 
-                "password" : "1234"
-            }
-
-+ Response 200
-
-+ Response 404
-
 ## Username recovery resource [/recover_username]
 
-### Recover username [POST]
+### Request username recovery via e-mail [POST]
 
 Allows user to be reminded of his/her username via e-mail message. On success, e-mail message with username is sent.
 
