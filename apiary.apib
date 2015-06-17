@@ -6,25 +6,21 @@ HOST: http://xo-signin.herokuapp.com/
 xo-signin is a simple web api allowing user registration with e-mail verification, password and username
 recovery.
 
-# xo-signin API Root [/]
+## Signup resource [/signup]
 
-## Register new user [POST/signup]
+### Register new user [POST]
 
 Registers a new user. Asks for e-mail verification.
-Attributes used:
-
-email    - The e-mail address provided by user.
-
-username - Unique user identifier chosen by user. 
-
-password - The password used to authenticate the user.
-
-
 The 409 response is returned if a user with a given e-mail address or username already exists.
+Following Attributes used:
+
++ email (string) - The e-mail address provided by user.
++ username (string) - Unique user identifier chosen by user. 
++ password (string) - The password used to authenticate the user.
 
 + Request (application/json)
 
-            { 
+            {
                 "email" : "mtari11@freeuni.edu.ge",
                 "username" : "MT13",
                 "password" : "1234"
@@ -37,61 +33,55 @@ The 409 response is returned if a user with a given e-mail address or username a
                 "username" : "MT13"
             }
 
-+ Response 409
++ Response 409 (application/json)
 
             {
-                "username_exists" : false,
-                "email_used" : true,
-                "message" : "The email address mtari11@freeuni.edu.ge is already registered. Please try different email address."
+                "username_error" : false,
+                "email_error" : true,
             }
-            
-## Confirm e-mail address [POST/confirm_email/{token}]
 
+## E-mail adress confirmation resource [/confirm_email/{token}]
+
+### Confirm e-mail address [GET]
 Confirms e-mail address to complete user registration process.
-
 + Parameters
-    + token (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`)
+    + token (required, string, `0b3211d3-76c6-456d-8971-20aa277bfc76`)
 
 + Response 200 (application/json)
 
-                {
-                    "email" : "mtari11@freeuni.edu.ge",
-                    "username" : "MT13"
-                }
+            {
+                "email" : "mtari11@freeuni.edu.ge",
+                "username" : "MT13"
+            }
 
 + Response 404 (application/json)
 
-## Password recovery [POST/recover_password]
+## Password recovery resource [/recover_password]
+
+### Request password recovery via e-mail [GET]
 
 Allows user to request new password in case it was forgotten.
 
 + Request (application/json)
 
-        { 
-            "email" : "mtari11@freeuni.edu.ge"
+        {
+            "email"  :"mtari11@freeuni.edu.ge",
             "username" : "MT13"
         }
 
-+ Response 200 (application/json)
++ Response 200
 
-        { 
-            "success": true,
-            "message": "reset instructions have been sent"
-        }
++ Response 401
 
-+ Response 401 (application/json)
 
-        { 
-            "success": false,
-            "message": "the email address or username was not found"
-        }
+## E-mail password recovery resource [/recover_password/{token}]
 
-## Password recovery from email [POST/recover_password/{token}]
+### Recover/change password from email [POST]
 
 Allows user to choose new password in case it was forgotten. This URI is supposed to be invoked from e-mail.
 
 + Parameters
-    + token (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`)
+    + token (required, string, `0b3211d3-76c6-456d-8971-20aa277bfc76`)
 
 + Request (application/json)
 
@@ -99,30 +89,22 @@ Allows user to choose new password in case it was forgotten. This URI is suppose
                 "password" : "1234"
             }
 
-+ Response 200 (application/json)
++ Response 200
 
-+ Response 404 (application/json)
++ Response 404
 
-## Username recovery [POST/recover_username]
+## Username recovery resource [/recover_username]
 
-Allows user to be reminded of his/her username via e-mail message.
+### Recover username [GET]
+
+Allows user to be reminded of his/her username via e-mail message. On success, e-mail message with username is sent.
 
 + Request (application/json)
 
-        { 
-            "email" : "mtari11@freeuni.edu.ge"
-        }
+            { 
+                "email" : "mtari11@freeuni.edu.ge"
+            }
 
-+ Response 200 (application/json)
++ Response 200
 
-        { 
-            "success": true,
-            "message": "username was sent to designated e-mail address"
-        }
-
-+ Response 401 (application/json)
-
-        { 
-            "success": false,
-            "message": "the e-mail address was not found"
-        }
++ Response 401
