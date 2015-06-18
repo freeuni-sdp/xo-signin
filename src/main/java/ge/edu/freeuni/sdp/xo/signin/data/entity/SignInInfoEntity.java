@@ -19,7 +19,7 @@ public class SignInInfoEntity extends TableServiceEntity {
 		this.password = userinfo.getPassword();
 	}
 
-	public static SignInInfoEntity fromDo(SigninInfo userinfo) {
+	public static SignInInfoEntity fromSignInfo(SigninInfo userinfo) {
 		return new SignInInfoEntity(userinfo);
 	}
 

@@ -33,12 +33,9 @@ Following Attributes used:
                 "username" : "MT13"
             }
 
-+ Response 409 (application/json)
++ Response 400
 
-            {
-                "username_error" : false,
-                "email_error" : true,
-            }
++ Response 409
 
 ## E-mail adress confirmation resource [/confirm_email/{token}]
 
@@ -66,10 +63,10 @@ Allows user to request new password in case it was forgotten. On Success, passwo
 
 + Request (application/json)
 
-        {
-            "email"  :"mtari11@freeuni.edu.ge",
-            "username" : "MT13"
-        }
+            {
+                "email" : "mtari11@freeuni.edu.ge",
+                "username" : "MT13"
+            }
 
 + Response 200
 

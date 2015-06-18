@@ -101,7 +101,8 @@ public class SigninInfo {
 
 	@Override
 	public String toString() {
-		return "E-mail: " + email + ", ID: " + username + ", PWD: " + password;
+		return "{\"email\" : \"" + email + "\", \"username\" : \"" + username
+				+ "\", \"password\" : \"" + password + "\"}";
 	}
 
 }

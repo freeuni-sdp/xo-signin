@@ -40,4 +40,28 @@ public class InMemoryRepository implements Repository {
 		return null;
 	}
 
+	@Override
+	public boolean hasToken(String token) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public UserInfoEntity findForToken(String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteToken(String token) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertToken(String token, String email) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

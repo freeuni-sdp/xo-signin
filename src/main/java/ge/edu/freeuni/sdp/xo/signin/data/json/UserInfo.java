@@ -76,7 +76,8 @@ public class UserInfo {
 
 	@Override
 	public String toString() {
-		return "E-mail: " + email + ", ID: " + username;
+		return "{\"email\" : \"" + email + "\", \"username\" : \"" + username
+				+ "\"}";
 	}
 
 }

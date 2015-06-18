@@ -1,7 +1,6 @@
 package ge.edu.freeuni.sdp.xo.signin.data.entity;
 
 import ge.edu.freeuni.sdp.xo.signin.data.entity.id.UserInfoEntityId;
-import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
 
 import com.microsoft.azure.storage.table.TableServiceEntity;
@@ -10,7 +9,7 @@ public class UserInfoEntity extends TableServiceEntity {
 	public UserInfoEntity() {
 	}
 
-	private UserInfoEntity(SigninInfo userinfo) {
+	private UserInfoEntity(UserInfo userinfo) {
 		UserInfoEntityId id = new UserInfoEntityId(userinfo.getEmail(),
 				userinfo.getUsername());
 		this.partitionKey = id.getPartitionKey();
@@ -19,11 +18,11 @@ public class UserInfoEntity extends TableServiceEntity {
 		this.username = this.rowKey;
 	}
 
-	public static UserInfoEntity fromDo(SigninInfo userinfo) {
+	public static UserInfoEntity fromUserInfo(UserInfo userinfo) {
 		return new UserInfoEntity(userinfo);
 	}
 
-	public UserInfo signInfo() {
+	public UserInfo userInfo() {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setEmail(getEmail());
 		userInfo.setUsername(getUsername());
