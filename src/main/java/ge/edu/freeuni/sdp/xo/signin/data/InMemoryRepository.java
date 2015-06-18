@@ -10,8 +10,9 @@ public class InMemoryRepository implements Repository {
 	private static Repository instance;
 
 	public static Repository getInstance() {
-		if (instance == null)
+		if (instance == null) {
 			instance = new InMemoryRepository();
+		}
 		return instance;
 	}
 

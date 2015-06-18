@@ -7,7 +7,6 @@ public class FakeRepositoryFactory {
 		if (repo == null) {
 			repo = InMemoryRepository.getInstance();
 		}
-
 		return repo;
 	}
 
