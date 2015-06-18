@@ -14,14 +14,14 @@ public interface Repository {
 
 	public abstract UserInfoEntity findByUsername(String username);
 
-	public abstract SignInInfoEntity findUserCredentials(UserInfoEntity userInfo);
+	public abstract UserInfoEntity findForToken(String token);
 
 	public abstract boolean hasToken(String token);
-
-	public abstract UserInfoEntity findForToken(String token);
 
 	public abstract void deleteToken(String token);
 
 	public abstract void insertToken(String token, String email);
+
+	public abstract SignInInfoEntity findUserCredentials(UserInfoEntity userInfo);
 
 }

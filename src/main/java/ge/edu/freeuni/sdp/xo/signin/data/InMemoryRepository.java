@@ -35,7 +35,7 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public SignInInfoEntity findUserCredentials(UserInfoEntity userInfo) {
+	public UserInfoEntity findForToken(String token) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -47,21 +47,21 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public UserInfoEntity findForToken(String token) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void deleteToken(String token) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void insertToken(String token, String email) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public SignInInfoEntity findUserCredentials(UserInfoEntity userInfo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

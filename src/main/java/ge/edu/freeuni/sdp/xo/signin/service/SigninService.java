@@ -1,5 +1,7 @@
 package ge.edu.freeuni.sdp.xo.signin.service;
 
+import java.security.NoSuchAlgorithmException;
+
 import ge.edu.freeuni.sdp.xo.signin.data.*;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.UserInfoEntity;
@@ -29,7 +31,8 @@ public class SigninService {
 
 	@POST
 	@Path("/signup")
-	public UserInfo registerUser(SigninInfo info) throws StorageException {
+	public UserInfo registerUser(SigninInfo info) throws StorageException,
+			NoSuchAlgorithmException {
 		/* If user has not entered required data */
 		if (info.getEmail() == null || info.getUsername() == null
 				|| info.getPassword() == null)
@@ -81,27 +84,10 @@ public class SigninService {
 	}
 
 	@POST
-	@Path("/recover_username")
-	public Response recoverUsername(@PathParam("email") String email) {
-		/* Check if given email exists */
-		UserInfoEntity entity = getRepository().findByEmail(email);
-		if (entity == null)
-			return Response.status(Status.UNAUTHORIZED).build();
-
-		// SEND EMAIL WITH USERNAME HERE
-
-		return Response.ok().build();
-	}
-
-	@POST
 	@Path("/recover_password")
-	public Response recoverPassword(UserInfo info) {
-		UserInfoEntity entity;
-		if (info.getEmail() != null)
-			entity = getRepository().findByEmail(info.getEmail());
-		else if (info.getUsername() != null)
-			entity = getRepository().findByUsername(info.getUsername());
-		else
+	public Response recoverPassword(@PathParam("username") String username) {
+		UserInfoEntity entity = getRepository().findByUsername(username);
+		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 
 		// SEND EMAIL WITH PASSWORD HERE
