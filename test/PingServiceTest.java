@@ -1,5 +1,5 @@
 import static org.junit.Assert.*;
-import ge.edu.freeuni.sdp.xo.signin.PingService;
+import ge.edu.freeuni.sdp.xo.signin.service.PingService;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
