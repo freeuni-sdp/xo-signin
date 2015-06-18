@@ -5,6 +5,7 @@ import java.util.*;
 
 import ge.edu.freeuni.sdp.xo.signin.data.*;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
+import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -28,9 +29,25 @@ public class SigninService {
 	@POST
 	@Path("/signup")
 	public Response registerUser(SigninInfo info) {
-		if(info.getEmail() == null || info.getUsername() == null || info.getPassword() == null) {
-			return Response.status(Status.BAD_REQUEST).build();
-		}
-		return Response.status(Status.CREATED).build();
+		return null;
 	}
+
+	@GET
+	@Path("/confirm_email/{token}")
+	public Response confirmEmail(@PathParam("token") String token) {
+		return null;
+	}
+	
+	@POST
+	@Path("/recover_username")
+	public Response recoverUsername(@PathParam("email") String email) {
+		return null;
+	}
+
+	@POST
+	@Path("/recover_password")
+	public Response recoverPassword(UserInfo info) {
+		return null;
+	}
+
 }
