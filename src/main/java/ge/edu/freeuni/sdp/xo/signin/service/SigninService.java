@@ -33,30 +33,30 @@ public class SigninService {
 	@Path("/signup")
 	public UserInfo registerUser(SigninInfo info) throws StorageException,
 			NoSuchAlgorithmException {
-		/* If user has not entered required data */
-		if (info.getEmail() == null || info.getUsername() == null
-				|| info.getPassword() == null)
-			throw new WebApplicationException(Status.BAD_REQUEST);
-
-		/* Checking if following user credentials are already used */
-		boolean emailUsed = (getRepository().findByEmail(info.getEmail()) != null);
-		boolean usernameUsed = (getRepository().findByUsername(
-				info.getUsername()) != null);
-
-		/*
-		 * If returns true, user with following e-mail and/or username already
-		 * exists
-		 */
-		if (emailUsed || usernameUsed)
-			throw new WebApplicationException(Status.CONFLICT);
-
-		/* Register new user */
-		SignInInfoEntity entity = SignInInfoEntity.fromSignInfo(info);
-		getRepository().insertOrUpdate(entity);
-
-		/* Save e-mail activation token */
-		getRepository().insertToken(Util.generateToken(info.getEmail()),
-				info.getEmail());
+//		/* If user has not entered required data */
+//		if (info.getEmail() == null || info.getUsername() == null
+//				|| info.getPassword() == null)
+//			throw new WebApplicationException(Status.BAD_REQUEST);
+//
+//		/* Checking if following user credentials are already used */
+//		boolean emailUsed = (getRepository().findByEmail(info.getEmail()) != null);
+//		boolean usernameUsed = (getRepository().findByUsername(
+//				info.getUsername()) != null);
+//
+//		/*
+//		 * If returns true, user with following e-mail and/or username already
+//		 * exists
+//		 */
+//		if (emailUsed || usernameUsed)
+//			throw new WebApplicationException(Status.CONFLICT);
+//
+//		/* Register new user */
+//		SignInInfoEntity entity = SignInInfoEntity.fromSignInfo(info);
+//		getRepository().insertOrUpdate(entity);
+//
+//		/* Save e-mail activation token */
+//		getRepository().insertToken(Util.generateToken(info.getEmail()),
+//				info.getEmail());
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();
