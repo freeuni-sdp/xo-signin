@@ -26,11 +26,11 @@ public class SigninService {
 	UriInfo uriInfo;
 
 	public Repository getRepository() {
-		return FakeRepositoryFactory.createInMemoryRepository();
+		return FakeRepositoryFactory.getInMemoryRepository();
 	}
 
 	@POST
-	@Path("/signup")
+	@Path("signup")
 	public UserInfo registerUser(SigninInfo info) throws StorageException,
 			NoSuchAlgorithmException {
 //		/* If user has not entered required data */
@@ -60,14 +60,14 @@ public class SigninService {
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();
-		uInfo.setEmail(info.getEmail());
-		uInfo.setUsername(info.getUsername());
+		uInfo.setEmail("email");
+		uInfo.setUsername("username");
 
 		return uInfo;
 	}
 
 	@GET
-	@Path("/confirm_email/{token}")
+	@Path("confirm_email/{token}")
 	public UserInfo confirmEmail(@PathParam("token") String token) {
 		/* Check if such e-mail verifier token exists */
 		if (!getRepository().hasToken(token))
@@ -84,7 +84,7 @@ public class SigninService {
 	}
 
 	@POST
-	@Path("/recover_password")
+	@Path("recover_password")
 	public Response recoverPassword(@PathParam("username") String username) {
 		UserInfoEntity entity = getRepository().findByUsername(username);
 		if (entity == null)
