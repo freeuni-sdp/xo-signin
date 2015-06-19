@@ -70,3 +70,19 @@ Allows user to receive their password in case it was forgotten. On Success, pass
 + Response 200
 
 + Response 401
+
+## Username recovery resource [/recover_username]
+
+### Request username recovery via e-mail [POST]
+
+Allows user to receive their username in case it was forgotten. On Success, username is sent to e-mail address.
+
++ Request (application/json)
+
+            {
+                "email" : "mtari11@freeuni.edu.ge"
+            }
+
++ Response 200
+
++ Response 401

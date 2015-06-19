@@ -95,4 +95,16 @@ public class SigninService {
 		return Response.ok().build();
 	}
 
+	@POST
+	@Path("recover_username")
+	public Response recoverUsername(@PathParam("email") String email) {
+		UserInfoEntity entity = getRepository().findByEmail(email);
+		if (entity == null)
+			return Response.status(Status.BAD_REQUEST).build();
+
+		// SEND EMAIL WITH USERNAME HERE
+
+		return Response.ok().build();
+	}
+
 }
