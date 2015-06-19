@@ -5,8 +5,10 @@ import java.security.NoSuchAlgorithmException;
 import ge.edu.freeuni.sdp.xo.signin.data.*;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.UserInfoEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.json.EmailInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
+import ge.edu.freeuni.sdp.xo.signin.data.json.UsernameInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -55,7 +57,8 @@ public class SigninService {
 		getRepository().insertOrUpdate(entity);
 
 		/* Save e-mail activation token */
-		getRepository().insertToken(Util.generateToken(info.getEmail()),
+		getRepository().insertToken(
+				Util.generateToken(info.getEmail(), info.getUsername()),
 				info.getEmail());
 
 		/* Returning registered user info */
@@ -85,8 +88,9 @@ public class SigninService {
 
 	@POST
 	@Path("recover_password")
-	public Response recoverPassword(@PathParam("username") String username) {
-		UserInfoEntity entity = getRepository().findByUsername(username);
+	public Response recoverPassword(UsernameInfo info) {
+		UserInfoEntity entity = getRepository().findByUsername(
+				info.getUsername());
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 
@@ -97,8 +101,8 @@ public class SigninService {
 
 	@POST
 	@Path("recover_username")
-	public Response recoverUsername(@PathParam("email") String email) {
-		UserInfoEntity entity = getRepository().findByEmail(email);
+	public Response recoverUsername(EmailInfo info) {
+		UserInfoEntity entity = getRepository().findByEmail(info.getEmail());
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 

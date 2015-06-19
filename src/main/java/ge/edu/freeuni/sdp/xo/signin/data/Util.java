@@ -13,11 +13,11 @@ public final class Util {
 	 * @return Returns hashed text.
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static String generateToken(String email)
+	public static String generateToken(String email, String username)
 			throws NoSuchAlgorithmException {
 		MessageDigest md;
 		md = MessageDigest.getInstance("SHA");
-		md.update(email.getBytes());
+		md.update((email + username).getBytes());
 		return hexToString(md.digest());
 	}
 

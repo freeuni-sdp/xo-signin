@@ -43,6 +43,8 @@ public class InMemoryRepository implements Repository {
 	@Override
 	public UserInfoEntity findByEmail(String email) {
 		SignInInfoEntity entity = mEmails.get(email);
+		if (entity == null)
+			return null;
 		UserInfo info = new UserInfo();
 		info.setEmail(entity.getEmail());
 		info.setUsername(entity.getUsername());
@@ -52,6 +54,8 @@ public class InMemoryRepository implements Repository {
 	@Override
 	public UserInfoEntity findByUsername(String username) {
 		SignInInfoEntity entity = mUsers.get(username);
+		if (entity == null)
+			return null;
 		UserInfo info = new UserInfo();
 		info.setEmail(entity.getEmail());
 		info.setUsername(entity.getUsername());
