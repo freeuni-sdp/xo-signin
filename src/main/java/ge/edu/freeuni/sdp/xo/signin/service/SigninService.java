@@ -60,8 +60,8 @@ public class SigninService {
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();
-		uInfo.setEmail("email");
-		uInfo.setUsername("username");
+		uInfo.setEmail(info.getEmail());
+		uInfo.setUsername(info.getUsername());
 
 		return uInfo;
 	}
