@@ -26,7 +26,7 @@ public class SigninServiceTest extends JerseyTest {
 	}
 
 	@Test
-	public void testSignupWithUniqueGoodData() {
+	public void testSignupWithUniqueGoodData1() {
 		/* Submitting data */
 		SigninInfo signInfo = new SigninInfo();
 		signInfo.setEmail("name@domain.com1");
@@ -40,36 +40,38 @@ public class SigninServiceTest extends JerseyTest {
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+	}
 
-		/* --------------------------------------------------------- */
-
+	@Test
+	public void testSignupWithUniqueGoodData2() {
 		/* Submitting data */
-		signInfo = new SigninInfo();
+		SigninInfo signInfo = new SigninInfo();
 		signInfo.setEmail("name@domain.com2");
 		signInfo.setUsername("username2");
 		signInfo.setPassword("password2");
 
 		/* Returning response - should be OK */
-		actual = target("/signup").request().post(
+		Response actual = target("/signup").request().post(
 				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
-		returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
+		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+	}
 
-		/* --------------------------------------------------------- */
-
+	@Test
+	public void testSignupWithUniqueGoodData3() {
 		/* Submitting data */
-		signInfo = new SigninInfo();
+		SigninInfo signInfo = new SigninInfo();
 		signInfo.setEmail("name@domain.com3");
 		signInfo.setUsername("username3");
 		signInfo.setPassword("password3");
 
 		/* Returning response - should be OK */
-		actual = target("/signup").request().post(
+		Response actual = target("/signup").request().post(
 				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
-		returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
+		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
 	}
