@@ -7,7 +7,6 @@ import com.microsoft.azure.storage.StorageException;
 
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.TokenEntity;
-import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 
 public class InMemoryRepository implements Repository {
 	Map<String, SignInInfoEntity> mUsers = new HashMap<String, SignInInfoEntity>();
@@ -41,24 +40,12 @@ public class InMemoryRepository implements Repository {
 
 	@Override
 	public SignInInfoEntity findByUsername(String username) {
-		SignInInfoEntity entity = mUsers.get(username);
-		if (entity == null)
-			return null;
-		SigninInfo info = new SigninInfo();
-		info.setEmail(entity.getEmail());
-		info.setUsername(entity.getUsername());
-		return SignInInfoEntity.fromSignInfo(info);
+		return mUsers.get(username);
 	}
 
 	@Override
 	public SignInInfoEntity findByEmail(String email) {
-		SignInInfoEntity entity = mEmails.get(email);
-		if (entity == null)
-			return null;
-		SigninInfo info = new SigninInfo();
-		info.setEmail(entity.getEmail());
-		info.setUsername(entity.getUsername());
-		return SignInInfoEntity.fromSignInfo(info);
+		return mEmails.get(email);
 	}
 
 	@Override
