@@ -19,8 +19,10 @@ public class EmailSender {
 		email.addTo(signinInfo.getEmail());
 		email.setFrom(FROM);
 		email.setSubject("Account Confirmation");
-		email.setText("Follow this link to connfirm account: " + "http://xo-webui.herokuapp.com/confirm_account?token="
-				+ token.getToken() + "&username=" + signinInfo.getUsername() + "&email=" + signinInfo.getEmail());
+//		email.setText("Follow this link to confirm account: " + "http://xo-webui.herokuapp.com/confirm_account?token="
+//				+ token.getToken() + "&username=" + signinInfo.getUsername() + "&email=" + signinInfo.getEmail());
+		email.setText("Follow this link to confirm account: " + "http://xo-signin.herokuapp.com/confirm_email/"
+				+ token.getToken());
 
 		try {
 			sendgrid.send(email);
