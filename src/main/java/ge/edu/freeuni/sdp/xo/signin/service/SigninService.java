@@ -27,11 +27,13 @@ import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.Token;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UsernameInfo;
+import ge.edu.freeuni.sdp.xo.signin.email.EmailSender;
 
 @Path("")
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class SigninService {
+	private static boolean DEBUG_MODE = true;
 
 	@Context
 	UriInfo uriInfo;
@@ -47,6 +49,10 @@ public class SigninService {
 		if (info.getEmail() == null || info.getUsername() == null || info.getPassword() == null)
 			throw new WebApplicationException(Status.BAD_REQUEST);
 
+		/* If user has entered malformed data */
+		if (info.getUsername().length() < 4 || info.getEmail().isEmpty() || info.getPassword().isEmpty())
+			throw new WebApplicationException(Status.BAD_REQUEST);
+
 		/* Checking if following user credentials are already used */
 		boolean emailUsed = (getRepository().findByEmail(info.getEmail()) != null);
 		boolean usernameUsed = (getRepository().findByUsername(info.getUsername()) != null);
@@ -59,8 +65,7 @@ public class SigninService {
 			throw new WebApplicationException(Status.CONFLICT);
 
 		/* Register new user */
-		SignInInfoEntity entity = SignInInfoEntity.fromSignInfo(info);
-		getRepository().insertOrUpdateSignInfo(entity);
+		getRepository().insertOrUpdateSignInfo(SignInInfoEntity.fromSignInfo(info));
 
 		/* Save e-mail activation token */
 		Token tok = new Token();
@@ -69,8 +74,11 @@ public class SigninService {
 		UsernameInfo uinfo = new UsernameInfo();
 		uinfo.setUsername(info.getUsername());
 
-		TokenEntity tokEntity = TokenEntity.fromToken(tok, uinfo);
-		getRepository().insertOrUpdateToken(tokEntity);
+		getRepository().insertOrUpdateToken(TokenEntity.fromToken(tok, uinfo));
+
+		/* Sending account activation email here */
+		if (!DEBUG_MODE)
+			EmailSender.sendActivationEmail(info, tok);
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();
@@ -94,10 +102,9 @@ public class SigninService {
 		getRepository().deleteToken(token);
 
 		/* Returning verified user info */
-		SigninInfo sinfo = entity.signInfo();
 		UserInfo info = new UserInfo();
-		info.setUsername(sinfo.getUsername());
-		info.setEmail(sinfo.getEmail());
+		info.setUsername(entity.getUsername());
+		info.setEmail(entity.getEmail());
 		return info;
 	}
 
@@ -108,7 +115,9 @@ public class SigninService {
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 
-		// SEND EMAIL WITH PASSWORD HERE
+		/* Sending email with password here */
+		if (!DEBUG_MODE)
+			EmailSender.sendUserInfoEmail(entity.signInfo());
 
 		return Response.ok().build();
 	}
@@ -120,7 +129,9 @@ public class SigninService {
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 
-		// SEND EMAIL WITH USERNAME HERE
+		/* Sending email with user info here */
+		if (!DEBUG_MODE)
+			EmailSender.sendUsernameEmail(entity.signInfo());
 
 		return Response.ok().build();
 	}
