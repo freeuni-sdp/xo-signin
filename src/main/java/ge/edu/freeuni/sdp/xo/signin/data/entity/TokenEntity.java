@@ -2,7 +2,7 @@ package ge.edu.freeuni.sdp.xo.signin.data.entity;
 
 import com.microsoft.azure.storage.table.TableServiceEntity;
 
-import ge.edu.freeuni.sdp.xo.signin.data.entity.id.TokenEntityId;
+import ge.edu.freeuni.sdp.xo.signin.data.entity.id.SignInInfoEntityId;
 import ge.edu.freeuni.sdp.xo.signin.data.json.Token;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UsernameInfo;
 
@@ -11,7 +11,7 @@ public class TokenEntity extends TableServiceEntity {
 	}
 
 	private TokenEntity(Token token, UsernameInfo uInfo) {
-		TokenEntityId id = new TokenEntityId(token.getToken());
+		SignInInfoEntityId id = new SignInInfoEntityId(token.getToken());
 		this.partitionKey = id.getPartitionKey();
 		this.rowKey = id.getRowKey();
 		this.Token = token.getToken();

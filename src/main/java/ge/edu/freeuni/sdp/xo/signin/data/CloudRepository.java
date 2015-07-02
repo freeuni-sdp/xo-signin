@@ -11,7 +11,7 @@ import com.microsoft.azure.storage.table.TableQuery.QueryComparisons;
 
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.TokenEntity;
-import ge.edu.freeuni.sdp.xo.signin.data.entity.id.TokenEntityId;
+import ge.edu.freeuni.sdp.xo.signin.data.entity.id.SignInInfoEntityId;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.id.UserInfoEntityId;
 
 public class CloudRepository implements Repository {
@@ -80,7 +80,7 @@ public class CloudRepository implements Repository {
 
 	@Override
 	public boolean hasToken(String token) throws StorageException {
-		TokenEntityId tok = new TokenEntityId(token);
+		SignInInfoEntityId tok = new SignInInfoEntityId(token);
 		TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(), TokenEntity.class);
 
 		if (tableActivationTokens.execute(operation).getResultAsType() != null)
@@ -93,9 +93,9 @@ public class CloudRepository implements Repository {
 	public boolean isConfirmed(String username) throws StorageException {
 		SignInInfoEntity sInfo = findByUsername(username);
 
-		TokenEntityId tok;
+		SignInInfoEntityId tok;
 		try {
-			tok = new TokenEntityId(Util.generateToken(sInfo.getUsername(), sInfo.getPassword()));
+			tok = new SignInInfoEntityId(Util.generateToken(sInfo.getUsername(), sInfo.getPassword()));
 			TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(),
 					TokenEntity.class);
 
@@ -111,7 +111,7 @@ public class CloudRepository implements Repository {
 
 	@Override
 	public SignInInfoEntity findForToken(String token) throws StorageException {
-		TokenEntityId tok = new TokenEntityId(token);
+		SignInInfoEntityId tok = new SignInInfoEntityId(token);
 		TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(), TokenEntity.class);
 		TokenEntity entity = tableActivationTokens.execute(operation).getResultAsType();
 
@@ -123,7 +123,7 @@ public class CloudRepository implements Repository {
 
 	@Override
 	public void deleteToken(String token) throws StorageException {
-		TokenEntityId tok = new TokenEntityId(token);
+		SignInInfoEntityId tok = new SignInInfoEntityId(token);
 		TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(), TokenEntity.class);
 		TokenEntity entity = tableActivationTokens.execute(operation).getResultAsType();
 
