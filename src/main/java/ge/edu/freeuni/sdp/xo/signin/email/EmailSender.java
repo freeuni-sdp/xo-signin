@@ -16,7 +16,7 @@ public class EmailSender {
 		SendGrid sendgrid = new SendGrid(SendGridInfo.USERNAME, SendGridInfo.PASSWORD);
 
 		SendGrid.Email email = new SendGrid.Email();
-		email.addTo("giopetriashvili@gmail.com");
+		email.addTo(signinInfo.getEmail());
 		email.setFrom(FROM);
 		email.setSubject("Account Confirmation");
 		email.setText("Follow this link to connfirm account: " + "http://xo-webui.herokuapp.com/confirm_account?token="
@@ -33,7 +33,7 @@ public class EmailSender {
 		SendGrid sendgrid = new SendGrid(SendGridInfo.USERNAME, SendGridInfo.PASSWORD);
 
 		SendGrid.Email email = new SendGrid.Email();
-		email.addTo("giopetriashvili@gmail.com");
+		email.addTo(signinInfo.getEmail());
 		email.setFrom(FROM);
 		email.setSubject("Account Information");
 		email.setText("Username: " + signinInfo.getUsername() + "\nPassword: " + signinInfo.getPassword());
@@ -49,7 +49,7 @@ public class EmailSender {
 		SendGrid sendgrid = new SendGrid(SendGridInfo.USERNAME, SendGridInfo.PASSWORD);
 
 		SendGrid.Email email = new SendGrid.Email();
-		email.addTo("giopetriashvili@gmail.com");
+		email.addTo(signinInfo.getEmail());
 		email.setFrom(FROM);
 		email.setSubject("Email Recovery");
 		email.setText("Username: " + signinInfo.getUsername());
