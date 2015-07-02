@@ -14,8 +14,8 @@ public class TokenEntity extends TableServiceEntity {
 		TokenEntityId id = new TokenEntityId(token.getToken());
 		this.partitionKey = id.getPartitionKey();
 		this.rowKey = id.getRowKey();
-		this.token = token.getToken();
-		this.username = uInfo.getUsername();
+		this.Token = token.getToken();
+		this.Username = uInfo.getUsername();
 	}
 
 	public static TokenEntity fromToken(Token token, UsernameInfo uInfo) {
@@ -28,23 +28,23 @@ public class TokenEntity extends TableServiceEntity {
 		return tok;
 	}
 
-	private String token;
-	private String username;
+	private String Token;
+	private String Username;
 
 	public String getToken() {
-		return token;
+		return Token;
 	}
 
 	public void setToken(String token) {
-		this.token = token;
+		this.Token = token;
 	}
 
 	public String getUsername() {
-		return username;
+		return Username;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.Username = username;
 	}
 
 }

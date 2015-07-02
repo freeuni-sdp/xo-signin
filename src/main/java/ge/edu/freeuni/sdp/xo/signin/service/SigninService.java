@@ -38,8 +38,8 @@ public class SigninService {
 	@Context
 	UriInfo uriInfo;
 
-	public Repository getRepository() {
-		return RepositoryFactory.getInMemoryRepository();
+	public Repository getRepository() throws StorageException {
+		return RepositoryFactory.getCloudRepository();
 	}
 
 	@POST
@@ -90,7 +90,7 @@ public class SigninService {
 
 	@GET
 	@Path("confirm_email/{token}")
-	public UserInfo confirmEmail(@PathParam("token") String token) {
+	public UserInfo confirmEmail(@PathParam("token") String token) throws StorageException {
 		/* Check if such e-mail verifier token exists */
 		if (!getRepository().hasToken(token))
 			throw new WebApplicationException(Status.NOT_FOUND);
@@ -106,6 +106,17 @@ public class SigninService {
 		info.setUsername(entity.getUsername());
 		info.setEmail(entity.getEmail());
 		return info;
+	}
+
+	@GET
+	@Path("is_confirmed/{username}")
+	public Response isConfirmed(@PathParam("username") String username) throws StorageException {
+		/* Check if such account even exists */
+		if (getRepository().findByUsername(username) == null)
+			throw new WebApplicationException(Status.NOT_FOUND);
+
+		boolean isConfirmed = getRepository().isConfirmed(username);
+		return Response.ok(isConfirmed, MediaType.APPLICATION_JSON).build();
 	}
 
 	@POST
@@ -124,7 +135,7 @@ public class SigninService {
 
 	@POST
 	@Path("recover_username")
-	public Response recoverUsername(EmailInfo info) {
+	public Response recoverUsername(EmailInfo info) throws StorageException {
 		SignInInfoEntity entity = getRepository().findByEmail(info.getEmail());
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();

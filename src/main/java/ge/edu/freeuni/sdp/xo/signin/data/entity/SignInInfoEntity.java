@@ -13,9 +13,9 @@ public class SignInInfoEntity extends TableServiceEntity {
 		UserInfoEntityId id = new UserInfoEntityId(userinfo.getUsername());
 		this.partitionKey = id.getPartitionKey();
 		this.rowKey = id.getRowKey();
-		this.email = userinfo.getEmail();
-		this.username = userinfo.getUsername();
-		this.password = userinfo.getPassword();
+		this.Email = userinfo.getEmail();
+		this.Username = userinfo.getUsername();
+		this.Password = userinfo.getPassword();
 	}
 
 	public static SignInInfoEntity fromSignInfo(SigninInfo userinfo) {
@@ -30,32 +30,32 @@ public class SignInInfoEntity extends TableServiceEntity {
 		return signInfo;
 	}
 
-	private String email;
-	private String username;
-	private String password;
+	private String Email;
+	private String Username;
+	private String Password;
 
 	public String getEmail() {
-		return email;
+		return Email;
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.Email = email;
 	}
 
 	public String getUsername() {
-		return username;
+		return Username;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.Username = username;
 	}
 
 	public String getPassword() {
-		return password;
+		return Password;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.Password = password;
 	}
 
 }

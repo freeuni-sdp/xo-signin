@@ -60,7 +60,7 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public boolean isActivated(String username) {
+	public boolean isConfirmed(String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}
