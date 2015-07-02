@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableOperation;
 
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.entity.TokenEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.id.UserInfoEntityId;
 
 public class CloudRepository implements Repository {
@@ -20,7 +21,7 @@ public class CloudRepository implements Repository {
 	}
 
 	@Override
-	public void insertOrUpdate(SignInInfoEntity entity) throws StorageException {
+	public void insertOrUpdateSignInfo(SignInInfoEntity entity) throws StorageException {
 		TableOperation operation = TableOperation.insertOrReplace(entity);
 		tableAccounts.execute(operation);
 	}
@@ -40,13 +41,19 @@ public class CloudRepository implements Repository {
 	}
 
 	@Override
-	public void insertToken(String token, String email) {
+	public void insertOrUpdateToken(TokenEntity entity) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public boolean hasToken(String token) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isActivated(String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}

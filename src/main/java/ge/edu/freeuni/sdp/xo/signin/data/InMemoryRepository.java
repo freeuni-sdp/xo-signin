@@ -6,6 +6,7 @@ import java.util.Map;
 import com.microsoft.azure.storage.StorageException;
 
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.entity.TokenEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 
 public class InMemoryRepository implements Repository {
@@ -33,7 +34,7 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public void insertOrUpdate(SignInInfoEntity entity) throws StorageException {
+	public void insertOrUpdateSignInfo(SignInInfoEntity entity) throws StorageException {
 		mUsers.put(entity.getUsername(), entity);
 		mEmails.put(entity.getEmail(), entity);
 	}
@@ -61,14 +62,20 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public void insertToken(String token, String email) {
-		SignInInfoEntity entity = findByEmail(email);
-		mTokens.put(token, entity);
+	public void insertOrUpdateToken(TokenEntity entity) {
+		SignInInfoEntity sEntity = findByUsername(entity.getUsername());
+		mTokens.put(entity.getToken(), sEntity);
 	}
 
 	@Override
 	public boolean hasToken(String token) {
 		return mTokens.containsKey(token);
+	}
+
+	@Override
+	public boolean isActivated(String username) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override

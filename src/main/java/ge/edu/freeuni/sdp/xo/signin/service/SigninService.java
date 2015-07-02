@@ -21,8 +21,10 @@ import ge.edu.freeuni.sdp.xo.signin.data.Repository;
 import ge.edu.freeuni.sdp.xo.signin.data.RepositoryFactory;
 import ge.edu.freeuni.sdp.xo.signin.data.Util;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.entity.TokenEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.json.EmailInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
+import ge.edu.freeuni.sdp.xo.signin.data.json.Token;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UsernameInfo;
 
@@ -58,10 +60,17 @@ public class SigninService {
 
 		/* Register new user */
 		SignInInfoEntity entity = SignInInfoEntity.fromSignInfo(info);
-		getRepository().insertOrUpdate(entity);
+		getRepository().insertOrUpdateSignInfo(entity);
 
 		/* Save e-mail activation token */
-		getRepository().insertToken(Util.generateToken(info.getEmail(), info.getUsername()), info.getEmail());
+		Token tok = new Token();
+		tok.setToken(Util.generateToken(info.getEmail(), info.getUsername()));
+
+		UsernameInfo uinfo = new UsernameInfo();
+		uinfo.setUsername(info.getUsername());
+
+		TokenEntity tokEntity = TokenEntity.fromToken(tok, uinfo);
+		getRepository().insertOrUpdateToken(tokEntity);
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();

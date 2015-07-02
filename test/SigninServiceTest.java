@@ -34,8 +34,7 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password1");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
@@ -51,8 +50,7 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password2");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
@@ -68,8 +66,7 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password3");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
@@ -84,10 +81,8 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password");
 
 		/* Returning response - should be BAD REQUEST */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
-				actual.getStatus());
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
 
 		/* --------------------------------------------------------- */
 
@@ -97,10 +92,8 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password");
 
 		/* Returning response - should be BAD REQUEST */
-		actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
-				actual.getStatus());
+		actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
 
 		/* --------------------------------------------------------- */
 
@@ -110,10 +103,8 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setUsername("username");
 
 		/* Returning response - should be BAD REQUEST */
-		actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
-				actual.getStatus());
+		actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
 	}
 
 	@Test
@@ -125,15 +116,14 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password4");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
-		/* User with given credentials should already exist, CONFLICT returned */
-		actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.CONFLICT.getStatusCode(),
-				actual.getStatus());
+		/*
+		 * User with given credentials should already exist, CONFLICT returned
+		 */
+		actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.CONFLICT.getStatusCode(), actual.getStatus());
 	}
 
 	@Test
@@ -146,12 +136,10 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password5");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
-		String realToken = Util.generateToken(signInfo.getEmail(),
-				signInfo.getUsername());
+		String realToken = Util.generateToken(signInfo.getEmail(), signInfo.getUsername());
 		actual = target("/confirm_email/" + realToken).request().get();
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
@@ -170,16 +158,13 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password6");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
 		/* Generating WRONG token */
-		String wrongToken = Util.generateToken(signInfo.getUsername(),
-				signInfo.getEmail());
+		String wrongToken = Util.generateToken(signInfo.getUsername(), signInfo.getEmail());
 		actual = target("/confirm_email/" + wrongToken).request().get();
-		assertEquals(Response.Status.NOT_FOUND.getStatusCode(),
-				actual.getStatus());
+		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actual.getStatus());
 	}
 
 	@Test
@@ -192,16 +177,14 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password7");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
 		/* Asking for password recovery with given registered username */
 		UsernameInfo usernameInfo = new UsernameInfo();
 		usernameInfo.setUsername(signInfo.getUsername());
 
-		actual = target("/recover_password").request().post(
-				Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
+		actual = target("/recover_password").request().post(Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 	}
 
@@ -215,18 +198,15 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password8");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
 		/* Asking for password recovery with given wrong username */
 		UsernameInfo usernameInfo = new UsernameInfo();
 		usernameInfo.setUsername(signInfo.getUsername() + signInfo.getEmail());
 
-		actual = target("/recover_password").request().post(
-				Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
-				actual.getStatus());
+		actual = target("/recover_password").request().post(Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
 	}
 
 	@Test
@@ -239,16 +219,14 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password9");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
 		/* Asking for username recovery with given registered email */
 		EmailInfo emailInfo = new EmailInfo();
 		emailInfo.setEmail(signInfo.getEmail());
 
-		actual = target("/recover_username").request().post(
-				Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
+		actual = target("/recover_username").request().post(Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 	}
 
@@ -262,18 +240,15 @@ public class SigninServiceTest extends JerseyTest {
 		signInfo.setPassword("password10");
 
 		/* Returning response - should be OK */
-		Response actual = target("/signup").request().post(
-				Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+		Response actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
 
 		/* Asking for username recovery with given wrong email */
 		EmailInfo emailInfo = new EmailInfo();
 		emailInfo.setEmail(signInfo.getEmail() + signInfo.getUsername());
 
-		actual = target("/recover_username").request().post(
-				Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
-		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
-				actual.getStatus());
+		actual = target("/recover_username").request().post(Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
 	}
 
 }
