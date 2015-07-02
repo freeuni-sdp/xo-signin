@@ -10,8 +10,8 @@ import com.microsoft.azure.storage.table.CloudTableClient;
 
 public class RepositoryFactory {
 	private static Repository repo;
-	private static String tableAccounts = "accounts";
-	private static String tableActivationTokens = "activation_tokens";
+	private static String tableAccounts = "xosignin_accounts";
+	private static String tableActivationTokens = "xosignin_activation_tokens";
 
 	public static Repository getInMemoryRepository() {
 		if (repo == null) {
