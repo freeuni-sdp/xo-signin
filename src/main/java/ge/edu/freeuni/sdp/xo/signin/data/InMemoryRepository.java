@@ -3,22 +3,20 @@ package ge.edu.freeuni.sdp.xo.signin.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
-import ge.edu.freeuni.sdp.xo.signin.data.entity.UserInfoEntity;
-import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
-
 import com.microsoft.azure.storage.StorageException;
+
+import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
+import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 
 public class InMemoryRepository implements Repository {
 	Map<String, SignInInfoEntity> mUsers = new HashMap<String, SignInInfoEntity>();
 	Map<String, SignInInfoEntity> mEmails = new HashMap<String, SignInInfoEntity>();
-	Map<String, UserInfoEntity> mTokens = new HashMap<String, UserInfoEntity>();
+	Map<String, SignInInfoEntity> mTokens = new HashMap<String, SignInInfoEntity>();
 
 	private static Repository instance;
 
-	private InMemoryRepository(Map<String, SignInInfoEntity> usernames,
-			Map<String, SignInInfoEntity> emails,
-			Map<String, UserInfoEntity> tokens) {
+	private InMemoryRepository(Map<String, SignInInfoEntity> usernames, Map<String, SignInInfoEntity> emails,
+			Map<String, SignInInfoEntity> tokens) {
 		mUsers = usernames;
 		mEmails = emails;
 		mTokens = tokens;
@@ -28,7 +26,7 @@ public class InMemoryRepository implements Repository {
 		if (instance == null) {
 			Map<String, SignInInfoEntity> usernames = new HashMap<String, SignInInfoEntity>();
 			Map<String, SignInInfoEntity> emails = new HashMap<String, SignInInfoEntity>();
-			Map<String, UserInfoEntity> tokens = new HashMap<String, UserInfoEntity>();
+			Map<String, SignInInfoEntity> tokens = new HashMap<String, SignInInfoEntity>();
 			instance = new InMemoryRepository(usernames, emails, tokens);
 		}
 		return instance;
@@ -41,30 +39,31 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public UserInfoEntity findByEmail(String email) {
-		SignInInfoEntity entity = mEmails.get(email);
-		if (entity == null)
-			return null;
-		UserInfo info = new UserInfo();
-		info.setEmail(entity.getEmail());
-		info.setUsername(entity.getUsername());
-		return UserInfoEntity.fromUserInfo(info);
-	}
-
-	@Override
-	public UserInfoEntity findByUsername(String username) {
+	public SignInInfoEntity findByUsername(String username) {
 		SignInInfoEntity entity = mUsers.get(username);
 		if (entity == null)
 			return null;
-		UserInfo info = new UserInfo();
+		SigninInfo info = new SigninInfo();
 		info.setEmail(entity.getEmail());
 		info.setUsername(entity.getUsername());
-		return UserInfoEntity.fromUserInfo(info);
+		return SignInInfoEntity.fromSignInfo(info);
 	}
 
 	@Override
-	public UserInfoEntity findForToken(String token) {
-		return mTokens.get(token);
+	public SignInInfoEntity findByEmail(String email) {
+		SignInInfoEntity entity = mEmails.get(email);
+		if (entity == null)
+			return null;
+		SigninInfo info = new SigninInfo();
+		info.setEmail(entity.getEmail());
+		info.setUsername(entity.getUsername());
+		return SignInInfoEntity.fromSignInfo(info);
+	}
+
+	@Override
+	public void insertToken(String token, String email) {
+		SignInInfoEntity entity = findByEmail(email);
+		mTokens.put(token, entity);
 	}
 
 	@Override
@@ -73,20 +72,13 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
+	public SignInInfoEntity findForToken(String token) {
+		return mTokens.get(token);
+	}
+
+	@Override
 	public void deleteToken(String token) {
 		mTokens.remove(token);
-	}
-
-	@Override
-	public void insertToken(String token, String email) {
-		UserInfoEntity entity = findByEmail(email);
-		mTokens.put(token, entity);
-	}
-
-	@Override
-	public SignInInfoEntity findUserCredentials(UserInfoEntity userInfo) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -10,12 +10,11 @@ public class SignInInfoEntity extends TableServiceEntity {
 	}
 
 	private SignInInfoEntity(SigninInfo userinfo) {
-		UserInfoEntityId id = new UserInfoEntityId(userinfo.getEmail(),
-				userinfo.getUsername());
+		UserInfoEntityId id = new UserInfoEntityId(userinfo.getUsername());
 		this.partitionKey = id.getPartitionKey();
 		this.rowKey = id.getRowKey();
-		this.email = this.partitionKey;
-		this.username = this.rowKey;
+		this.email = userinfo.getEmail();
+		this.username = userinfo.getUsername();
 		this.password = userinfo.getPassword();
 	}
 

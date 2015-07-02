@@ -2,22 +2,29 @@ package ge.edu.freeuni.sdp.xo.signin.service;
 
 import java.security.NoSuchAlgorithmException;
 
-import ge.edu.freeuni.sdp.xo.signin.data.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+
+import com.microsoft.azure.storage.StorageException;
+
+import ge.edu.freeuni.sdp.xo.signin.data.Repository;
+import ge.edu.freeuni.sdp.xo.signin.data.RepositoryFactory;
+import ge.edu.freeuni.sdp.xo.signin.data.Util;
 import ge.edu.freeuni.sdp.xo.signin.data.entity.SignInInfoEntity;
-import ge.edu.freeuni.sdp.xo.signin.data.entity.UserInfoEntity;
 import ge.edu.freeuni.sdp.xo.signin.data.json.EmailInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UserInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.UsernameInfo;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
-
-import com.microsoft.azure.storage.StorageException;
 
 @Path("")
 @Consumes({ MediaType.APPLICATION_JSON })
@@ -33,17 +40,14 @@ public class SigninService {
 
 	@POST
 	@Path("signup")
-	public UserInfo registerUser(SigninInfo info) throws StorageException,
-			NoSuchAlgorithmException {
+	public UserInfo registerUser(SigninInfo info) throws StorageException, NoSuchAlgorithmException {
 		/* If user has not entered required data */
-		if (info.getEmail() == null || info.getUsername() == null
-				|| info.getPassword() == null)
+		if (info.getEmail() == null || info.getUsername() == null || info.getPassword() == null)
 			throw new WebApplicationException(Status.BAD_REQUEST);
 
 		/* Checking if following user credentials are already used */
 		boolean emailUsed = (getRepository().findByEmail(info.getEmail()) != null);
-		boolean usernameUsed = (getRepository().findByUsername(
-				info.getUsername()) != null);
+		boolean usernameUsed = (getRepository().findByUsername(info.getUsername()) != null);
 
 		/*
 		 * If returns true, user with following e-mail and/or username already
@@ -57,9 +61,7 @@ public class SigninService {
 		getRepository().insertOrUpdate(entity);
 
 		/* Save e-mail activation token */
-		getRepository().insertToken(
-				Util.generateToken(info.getEmail(), info.getUsername()),
-				info.getEmail());
+		getRepository().insertToken(Util.generateToken(info.getEmail(), info.getUsername()), info.getEmail());
 
 		/* Returning registered user info */
 		UserInfo uInfo = new UserInfo();
@@ -77,20 +79,23 @@ public class SigninService {
 			throw new WebApplicationException(Status.NOT_FOUND);
 
 		/* Get associated account to be activated */
-		UserInfoEntity entity = getRepository().findForToken(token);
+		SignInInfoEntity entity = getRepository().findForToken(token);
 
 		/* Verifying e-mail */
 		getRepository().deleteToken(token);
 
 		/* Returning verified user info */
-		return entity.userInfo();
+		SigninInfo sinfo = entity.signInfo();
+		UserInfo info = new UserInfo();
+		info.setUsername(sinfo.getUsername());
+		info.setEmail(sinfo.getEmail());
+		return info;
 	}
 
 	@POST
 	@Path("recover_password")
-	public Response recoverPassword(UsernameInfo info) {
-		UserInfoEntity entity = getRepository().findByUsername(
-				info.getUsername());
+	public Response recoverPassword(UsernameInfo info) throws StorageException {
+		SignInInfoEntity entity = getRepository().findByUsername(info.getUsername());
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 
@@ -102,7 +107,7 @@ public class SigninService {
 	@POST
 	@Path("recover_username")
 	public Response recoverUsername(EmailInfo info) {
-		UserInfoEntity entity = getRepository().findByEmail(info.getEmail());
+		SignInInfoEntity entity = getRepository().findByEmail(info.getEmail());
 		if (entity == null)
 			return Response.status(Status.BAD_REQUEST).build();
 

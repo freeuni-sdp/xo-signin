@@ -4,9 +4,15 @@ public class UserInfoEntityId {
 	private String partitionKey;
 	private String rowKey;
 
-	public UserInfoEntityId(String email, String username) {
-		this.partitionKey = email;
-		this.rowKey = username;
+	public UserInfoEntityId(String partitionKey, String rowKey) {
+		this.partitionKey = partitionKey;
+		this.rowKey = rowKey;
+	}
+
+	public UserInfoEntityId(String id) {
+		final int cutIndex = 3;
+		this.partitionKey = id.substring(0, cutIndex);
+		this.rowKey = id.substring(cutIndex, id.length());
 	}
 
 	public String getId() {

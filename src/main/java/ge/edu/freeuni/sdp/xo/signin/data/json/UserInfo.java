@@ -47,8 +47,7 @@ public class UserInfo {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -76,8 +75,7 @@ public class UserInfo {
 
 	@Override
 	public String toString() {
-		return "{\"email\" : \"" + email + "\", \"username\" : \"" + username
-				+ "\"}";
+		return "{\"email\" : \"" + email + "\", \"username\" : \"" + username + "\"}";
 	}
 
 }
