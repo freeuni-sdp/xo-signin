@@ -28,7 +28,7 @@ public class SigninService {
 	UriInfo uriInfo;
 
 	public Repository getRepository() {
-		return FakeRepositoryFactory.getInMemoryRepository();
+		return RepositoryFactory.getInMemoryRepository();
 	}
 
 	@POST
