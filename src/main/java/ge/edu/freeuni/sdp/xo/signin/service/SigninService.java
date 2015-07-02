@@ -33,7 +33,7 @@ import ge.edu.freeuni.sdp.xo.signin.email.EmailSender;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class SigninService {
-	private static boolean DEBUG_MODE = true;
+	public static boolean DEBUG_MODE = false;
 
 	@Context
 	UriInfo uriInfo;

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,12 +32,12 @@ public class SigninServiceTest extends JerseyTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		clearTables();
+		SigninService.DEBUG_MODE = true;
 	}
 
-	private static void clearTables() {
-		// TODO Auto-generated method stub
-
+	@AfterClass
+	public static void setUpAfterClass() throws Exception {
+		SigninService.DEBUG_MODE = false;
 	}
 
 	@Test
