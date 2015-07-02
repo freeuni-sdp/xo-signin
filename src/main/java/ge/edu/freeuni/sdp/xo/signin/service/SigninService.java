@@ -9,11 +9,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.jersey.client.ClientConfig;
 
 import com.microsoft.azure.storage.StorageException;
 
@@ -33,6 +38,8 @@ import ge.edu.freeuni.sdp.xo.signin.email.EmailSender;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class SigninService {
+	private static final String XO_LOGIN_SERVICE = "http://xo-login.herokuapp.com/webapi/login/";
+	private static final String XO_LOGIN_ADD = "users";
 	public static boolean DEBUG_MODE = false;
 
 	@Context
@@ -101,11 +108,25 @@ public class SigninService {
 		/* Verifying e-mail */
 		getRepository().deleteToken(token);
 
+		if (!DEBUG_MODE)
+			registerAccount(entity.signInfo());
+
 		/* Returning verified user info */
 		UserInfo info = new UserInfo();
 		info.setUsername(entity.getUsername());
 		info.setEmail(entity.getEmail());
 		return info;
+	}
+
+	private void registerAccount(SigninInfo signInfo) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		try {
+			client.target(XO_LOGIN_SERVICE + XO_LOGIN_ADD).request()
+					.post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
+			// if (response.getStatus() != Status.CREATED.getStatusCode())
+		} catch (WebApplicationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@GET
