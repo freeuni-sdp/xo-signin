@@ -13,6 +13,8 @@ public interface Repository {
 
 	public abstract SignInInfoEntity findByEmail(String email);
 
+	public abstract void deleteUser(String username) throws StorageException;
+
 	public abstract void insertOrUpdateToken(TokenEntity entity) throws StorageException;
 
 	public abstract boolean hasToken(String token) throws StorageException;

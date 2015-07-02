@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.security.NoSuchAlgorithmException;
 
+import ge.edu.freeuni.sdp.xo.signin.data.RepositoryFactory;
 import ge.edu.freeuni.sdp.xo.signin.data.Util;
 import ge.edu.freeuni.sdp.xo.signin.data.json.EmailInfo;
 import ge.edu.freeuni.sdp.xo.signin.data.json.SigninInfo;
@@ -16,13 +17,26 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.microsoft.azure.storage.StorageException;
 
 public class SigninServiceTest extends JerseyTest {
 
 	@Override
 	protected Application configure() {
 		return new ResourceConfig(SigninService.class);
+	}
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		clearTables();
+	}
+
+	private static void clearTables() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Test
@@ -39,6 +53,8 @@ public class SigninServiceTest extends JerseyTest {
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -55,6 +71,8 @@ public class SigninServiceTest extends JerseyTest {
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -71,6 +89,8 @@ public class SigninServiceTest extends JerseyTest {
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -124,6 +144,8 @@ public class SigninServiceTest extends JerseyTest {
 		 */
 		actual = target("/signup").request().post(Entity.entity(signInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.CONFLICT.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -146,6 +168,8 @@ public class SigninServiceTest extends JerseyTest {
 		UserInfo returnedInfo = (UserInfo) actual.readEntity(UserInfo.class);
 		assertEquals(signInfo.getEmail(), returnedInfo.getEmail());
 		assertEquals(signInfo.getUsername(), returnedInfo.getUsername());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -165,6 +189,8 @@ public class SigninServiceTest extends JerseyTest {
 		String wrongToken = Util.generateToken(signInfo.getUsername(), signInfo.getEmail());
 		actual = target("/confirm_email/" + wrongToken).request().get();
 		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -186,6 +212,8 @@ public class SigninServiceTest extends JerseyTest {
 
 		actual = target("/recover_password").request().post(Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -207,6 +235,8 @@ public class SigninServiceTest extends JerseyTest {
 
 		actual = target("/recover_password").request().post(Entity.entity(usernameInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -228,6 +258,8 @@ public class SigninServiceTest extends JerseyTest {
 
 		actual = target("/recover_username").request().post(Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
 	}
 
 	@Test
@@ -249,6 +281,17 @@ public class SigninServiceTest extends JerseyTest {
 
 		actual = target("/recover_username").request().post(Entity.entity(emailInfo, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), actual.getStatus());
+
+		cleanUser(signInfo);
+	}
+
+	private void cleanUser(SigninInfo signInfo) {
+		try {
+			RepositoryFactory.getRepository().deleteUser(signInfo.getUsername());
+		} catch (StorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

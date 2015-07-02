@@ -13,6 +13,10 @@ public class RepositoryFactory {
 	private static String tableAccounts = "xosigninAccounts";
 	private static String tableActivationTokens = "xosigninActivationTokens";
 
+	public static Repository getRepository() throws StorageException {
+		return getCloudRepository();
+	}
+
 	public static Repository getInMemoryRepository() {
 		if (repo == null) {
 			repo = InMemoryRepository.getInstance();

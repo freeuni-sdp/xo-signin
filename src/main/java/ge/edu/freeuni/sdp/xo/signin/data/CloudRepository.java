@@ -54,6 +54,25 @@ public class CloudRepository implements Repository {
 	}
 
 	@Override
+	public void deleteUser(String username) throws StorageException {
+		SignInInfoEntity entity = findByUsername(username);
+		if (entity == null)
+			return;
+		try {
+			deleteToken(Util.generateToken(entity.getEmail(), entity.getUsername()));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (StorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		TableOperation deleteUser = TableOperation.delete(entity);
+		tableAccounts.execute(deleteUser);
+	}
+
+	@Override
 	public void insertOrUpdateToken(TokenEntity entity) throws StorageException {
 		TableOperation operation = TableOperation.insertOrReplace(entity);
 		tableActivationTokens.execute(operation);

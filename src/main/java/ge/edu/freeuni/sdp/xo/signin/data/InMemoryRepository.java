@@ -1,5 +1,6 @@
 package ge.edu.freeuni.sdp.xo.signin.data;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,20 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
+	public void deleteUser(String username) {
+		SignInInfoEntity entity = findByUsername(username);
+		try {
+			mTokens.remove(Util.generateToken(entity.getEmail(), entity.getUsername()));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		mEmails.remove(entity.getEmail());
+		mUsers.remove(entity.getEmail());
+	}
+
+	@Override
 	public void insertOrUpdateToken(TokenEntity entity) {
 		SignInInfoEntity sEntity = findByUsername(entity.getUsername());
 		mTokens.put(entity.getToken(), sEntity);
@@ -61,8 +76,10 @@ public class InMemoryRepository implements Repository {
 
 	@Override
 	public boolean isConfirmed(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		SignInInfoEntity entity = findByUsername(username);
+		if (mTokens.containsValue(entity))
+			return false;
+		return true;
 	}
 
 	@Override
