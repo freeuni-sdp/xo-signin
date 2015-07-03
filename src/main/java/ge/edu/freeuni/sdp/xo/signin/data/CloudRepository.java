@@ -90,26 +90,6 @@ public class CloudRepository implements Repository {
 	}
 
 	@Override
-	public boolean isConfirmed(String username) throws StorageException {
-		SignInInfoEntity sInfo = findByUsername(username);
-
-		SignInInfoEntityId tok;
-		try {
-			tok = new SignInInfoEntityId(Util.generateToken(sInfo.getUsername(), sInfo.getPassword()));
-			TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(),
-					TokenEntity.class);
-
-			if (tableActivationTokens.execute(operation).getResultAsType() != null)
-				return false;
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return true;
-	}
-
-	@Override
 	public SignInInfoEntity findForToken(String token) throws StorageException {
 		SignInInfoEntityId tok = new SignInInfoEntityId(token);
 		TableOperation operation = TableOperation.retrieve(tok.getPartitionKey(), tok.getRowKey(), TokenEntity.class);

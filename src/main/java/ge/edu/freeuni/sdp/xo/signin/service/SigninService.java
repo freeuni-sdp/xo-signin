@@ -129,17 +129,6 @@ public class SigninService {
 		}
 	}
 
-	@GET
-	@Path("is_confirmed/{username}")
-	public Response isConfirmed(@PathParam("username") String username) throws StorageException {
-		/* Check if such account even exists */
-		if (getRepository().findByUsername(username) == null)
-			throw new WebApplicationException(Status.NOT_FOUND);
-
-		boolean isConfirmed = getRepository().isConfirmed(username);
-		return Response.ok(isConfirmed, MediaType.APPLICATION_JSON).build();
-	}
-
 	@POST
 	@Path("recover_password")
 	public Response recoverPassword(UsernameInfo info) throws StorageException {

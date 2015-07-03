@@ -75,14 +75,6 @@ public class InMemoryRepository implements Repository {
 	}
 
 	@Override
-	public boolean isConfirmed(String username) {
-		SignInInfoEntity entity = findByUsername(username);
-		if (mTokens.containsValue(entity))
-			return false;
-		return true;
-	}
-
-	@Override
 	public SignInInfoEntity findForToken(String token) {
 		return mTokens.get(token);
 	}

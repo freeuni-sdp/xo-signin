@@ -19,8 +19,6 @@ public interface Repository {
 
 	public abstract boolean hasToken(String token) throws StorageException;
 
-	public abstract boolean isConfirmed(String username) throws StorageException;
-
 	public abstract SignInInfoEntity findForToken(String token) throws StorageException;
 
 	public abstract void deleteToken(String token) throws StorageException;
